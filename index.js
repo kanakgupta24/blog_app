@@ -46,6 +46,5 @@ app.listen(PORT, ()=>console.log(`Server is running successfully on port ${PORT}
 
 const username=process.env.DB_USERNAME;
 const password=process.env.DB_PASSWORD;
-const url=process.env.MONGO_URI||`mongodb+srv://${username}:${password}@blog-app.qzqa9wo.mongodb.net/?retryWrites=true&w=majority`;
 
-Connection(url);
+Connection(username,password);
