@@ -5,11 +5,30 @@ import bodyParser from 'body-parser';
 import path from 'path';
 
 
-import Connection from './database/db.js';
 
 import router from './routes/route.js';
 
 dotenv.config();
+
+import mongoose from 'mongoose';
+
+const username=process.env.DB_USERNAME;
+const password=process.env.DB_PASSWORD;
+
+const Connection= async ()=>{
+const url=`mongodb+srv://${username}:${password}@blog-app.qzqa9wo.mongodb.net/?retryWrites=true&w=majority`;
+
+    try{
+       await mongoose.connect(url);
+       console.log('Database Connected Successfully')
+    }catch(error){
+        console.log('Error while connecting database',error)
+
+    }
+}
+
+// Connection(username,password);
+
 
 const __dirname=path.resolve();
 
@@ -39,12 +58,15 @@ app.use('/',router);
     )
 
 
-const PORT=process.env.PORT||8000;
+    
 
-app.listen(PORT, ()=>console.log(`Server is running successfully on port ${PORT}`));
+    const PORT=process.env.PORT||8000;
+
+    Connection().then(() => {
+        console.log("db connected");
+        app.listen(PORT, ()=>console.log(`Server is running successfully on port ${PORT}`));
+    })
 
 
-const username=process.env.DB_USERNAME;
-const password=process.env.DB_PASSWORD;
 
-Connection(username,password);
+
